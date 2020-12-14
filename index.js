@@ -6,6 +6,7 @@ import connectDB from "./config/db";
 
 const server = express();
 
+server.use(express.json())
 server.use('/api/auth',auth);
 server.use('/api/contacts',contacts);
 server.use('/api/users',users);

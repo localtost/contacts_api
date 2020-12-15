@@ -7,15 +7,20 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import config from 'config';
 import User from '../model/User';
-
+import middleware from '../middleware/auth'
 
 const auth = express.Router();
 
 //@route    GET api/auth
 //@desc     Get logged in user
 //@@access  Private
-auth.get("/", (req, res) => {
-  res.send(" Get Auth");
+auth.get("/", middleware, async (req, res) => {
+   try {
+     const  user = await User.findById(req.user).select('-password');
+     res.json(user)
+   }catch (e) {
+        res.status(500).send("Server Error")
+   }
 });
 
 //@route    POST api/auth
